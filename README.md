@@ -51,6 +51,18 @@ DB_CONNECTION=sqlite
 DB_HOST=/home/zydhanlinnar11/Github/rest-api-implementation-laravel/database.sqlite
 ```
 
+### Creating Migrations and Model
+
+We want to create model and migration for `Developer` table. Fortunately, Laravel provides easy way to make model and migrations with one single command:
+
+```bash
+php artisan make:model Developer --migration
+```
+
+Then, you will have two new files `app/Models/Developer.php` for the model and `database/migrations/2022_03_18_090902_create_developers_table.php` for the migrations. Note that the timestamp of migration file depends on when you execute the command.
+
+![Created model and migration files](https://media.discordapp.net/attachments/822059316806811651/954305588400103444/unknown.png)
+
 ## Reference
 
 - [API - Wikipedia](https://en.wikipedia.org/wiki/API)
