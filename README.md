@@ -14,7 +14,6 @@ REST (Representational State Transfer) API is an architecture that allow server 
 
 - PHP 8.0+
 - Composer v2.0+
-- Database and its credentials
 
 ### Project Initialization
 
@@ -34,6 +33,23 @@ php artisan serve
 Then open [http://127.0.0.1:8000](http://127.0.0.1:8000), you should see this sweet Laravel welcome screen:
 
 ![Laravel default welcome screen](https://media.discordapp.net/attachments/822059316806811651/954301257496018984/unknown.png?width=1020&height=671)
+
+### Setting Up Database
+
+I want to make this tutorial to be as simple as possible, so we're going to use SQLite3 for our database connection.
+
+First, create sqlite file:
+
+```bash
+touch database.sqlite
+```
+
+Open your `.env` file and edit this section to connect to your database file:
+
+```text
+DB_CONNECTION=sqlite
+DB_HOST=/home/zydhanlinnar11/Github/rest-api-implementation-laravel/database.sqlite
+```
 
 ## Reference
 
