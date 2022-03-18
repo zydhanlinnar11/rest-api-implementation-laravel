@@ -14,6 +14,7 @@ REST (Representational State Transfer) API is an architecture that allow server 
 
 - PHP 8.0+
 - Composer v2.0+
+- Database and its credentials
 
 ### Project Initialization
 
@@ -21,9 +22,21 @@ First, let initialize our Laravel project. This should automatically install the
 
 ```bash
 composer create-project laravel/laravel rest-api-implementation-laravel
+cd rest-api-implementation-laravel
 ```
+
+Then ensure the server can be up and running:
+
+```bash
+php artisan serve
+```
+
+Then open [http://127.0.0.1:8000](http://127.0.0.1:8000), you should see this sweet Laravel welcome screen:
+
+![Laravel default welcome screen](https://media.discordapp.net/attachments/822059316806811651/954301257496018984/unknown.png?width=1020&height=671)
 
 ## Reference
 
 - [API - Wikipedia](https://en.wikipedia.org/wiki/API)
 - [What is a REST API? - Red Hat](https://www.redhat.com/en/topics/api/what-is-a-rest-api)
+- [Laravel API Tutorial: Building & Testing a RESTful API | Toptal](https://www.toptal.com/laravel/restful-laravel-api-tutorial)
