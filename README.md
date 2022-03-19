@@ -345,13 +345,50 @@ Now if we access [resource listing](#listing-resources), we should receive empty
 
 ![Empty array Postman](https://media.discordapp.net/attachments/822059316806811651/954630039851368478/unknown.png?width=803&height=479)
 
-And if we try to access [with resource ID](#test-display-specific-resource), we got 404 not found: 
+And if we try to access [with resource ID](#test-display-specific-resource), we got 404 not found:
 
 ![Not found Postman](https://media.discordapp.net/attachments/822059316806811651/954630390688145428/unknown.png?width=648&height=479)
 
 ## Verdict
 
 Laravel bring us ease of API development with eloquent, API controller, migration, etc. There are many room of improvements here, right now we don't have any authentication method so that random user could access our API and do whatever they want. Let me know if you want i make the tutorial to secure your API!
+
+## Bonus
+
+### API Resources
+
+Typically, you don't want to return all column for listing resources, to achieve it, you can use API Resource to transform eloquent model before returning it.
+
+First, create resource file:
+
+```bash
+php artisan make:resource DeveloperResource
+```
+
+We only want to return developer ID and its name, so we only put those columns to resource file:
+
+```php
+public function toArray($request)
+{
+    return [
+        'id' => $this->id,
+        'name' => $this->name
+    ];
+}
+```
+
+Then, in `DeveloperController@index`, we should call resource file when returning it.
+
+```php
+public function index()
+{
+    return DeveloperResource::collection(Developer::all());
+}
+```
+
+![DeveloperResource testing](https://media.discordapp.net/attachments/822059316806811651/954635360653156412/unknown.png)
+
+Now, it only return `id` and `name`. If we look closer, it also add `data`, that will be useful if you use pagination. You can read more about API resources [here](https://laravel.com/docs/9.x/eloquent-resources)
 
 ## Reference
 

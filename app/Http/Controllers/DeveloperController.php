@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DeveloperResource;
 use App\Models\Developer;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class DeveloperController extends Controller
      */
     public function index()
     {
-        return Developer::all();
+        return DeveloperResource::collection(Developer::all());
     }
 
     /**
