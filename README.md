@@ -14,6 +14,7 @@ REST (Representational State Transfer) API is an architecture that allow server 
 
 - PHP 8.0+
 - Composer v2.0+
+- [Postman](https://www.postman.com/)
 
 ### Project Initialization
 
@@ -229,6 +230,128 @@ Short explanations:
 - `POST` method for `api/developers` will be handled by `store()` method in `DeveloperController`. This route is for creating new resource.
 - `PUT`/`PATCH` method for `api/developers/{developers}` will be handled by `update()` method in `DeveloperController`. This route is for updating specific resource.
 - `DELETE` method for `api/developers/{developers}` will be handled by `destroy()` method in `DeveloperController`. This route is for deleting specific resource.
+
+## Handling Request
+
+### Creating Resource
+
+When creating new resource, we need to take input `name` and `fav_lang` from user and put it to the database.
+
+```php
+public function store(Request $request)
+{
+    $developer = new Developer();
+    $developer->name = $request->input('name');
+    $developer->fav_lang = $request->input('fav_lang');
+    
+    $developer->save();
+    return response()->json([ 'message' => 'Resource created' ]);
+}
+```
+
+#### Test Create Resource API
+
+We're going to make `POST` request to `http://localhost:8000/api/developers` using Postman. First, we need to set `Content-Type` and `Accept` header to `application/json` to make sure we always receive JSON response from Laravel.
+
+![Content-Type and Accept header](https://media.discordapp.net/attachments/822059316806811651/954622760502587392/unknown.png)
+
+Now, we want to insert developer with name `Zydhan Linnar Putra` and his favourite languange which is `C++`:
+
+![Resource successfully created](https://media.discordapp.net/attachments/822059316806811651/954623959771516958/unknown.png?width=622&height=479)
+
+Nice! We received response that we want.
+
+### Listing Resources
+
+We only need to return all records in database using `Developer::all()`:
+
+```php
+public function index()
+{
+    return Developer::all();
+}
+```
+
+#### Test Resources Listing
+
+To test this functionality, we should make `GET` request to `http://localhost:8000/api/developers`:
+
+![Resource listing Postman](https://media.discordapp.net/attachments/822059316806811651/954624971815149578/unknown.png?width=661&height=479)
+
+### Showing Specific Resource
+
+We only need to return `$developer` from method parameter:
+
+```php
+public function show(Developer $developer)
+{
+    return $developer;
+}
+```
+
+#### Test Display Specific Resource
+
+We should make `GET` request to `http://localhost:8000/api/developers/{resource_id}`. According to [resources listing](#test-resources-listing) the resource id is 1, so we need to test `http://localhost:8000/api/developers/1`:
+
+![Specific resource Postman](https://media.discordapp.net/attachments/822059316806811651/954626556188303400/unknown.png?width=665&height=479)
+
+### Updating resources
+
+Like [resource creation](#creating-resource), we also need to take input from user, and update it to database. But for updating, we don't need to create new `Developer` instance, we only need to update instance that given in method param:
+
+```php
+public function update(Request $request, Developer $developer)
+{
+    $developer->name = $request->input('name');
+    $developer->fav_lang = $request->input('fav_lang');
+    
+    $developer->save();
+    return response()->json([ 'message' => 'Resource updated' ]);
+}
+```
+
+#### Test Update Specific Resource
+
+Make a `PUT` request to `http://localhost:8000/api/developers/1` with body structure [resource creation](#creating-resource), but in this case we want to change his name to `Zydhan` and make `PHP` as his favourite language:
+
+![Resource update Postman](https://media.discordapp.net/attachments/822059316806811651/954628113575333908/unknown.png?width=655&height=479)
+
+Then, [confirm if the resource is updated](#test-display-specific-resource):
+
+![resource successfully updated Postman](https://media.discordapp.net/attachments/822059316806811651/954628490286739456/unknown.png?width=665&height=479)
+
+If you look at it, Laravel also automatically update `updated_at` column.
+
+### Delete resource
+
+Eloquent provide `delete()` method to delete resource from table:
+
+```php
+public function destroy(Developer $developer)
+{
+    $developer->delete();
+
+    return response()->json([ 'message' => 'Resource deleted' ]);
+}
+```
+
+#### Test resource deletion
+
+Method for this request is `DELETE` and we want to delete developer with name `Zydhan` which has ID of 1. So we make `DELETE` request to `http://localhost:8000/api/developers/1`:
+
+![Resource deletion Postman](https://media.discordapp.net/attachments/822059316806811651/954629656143876106/unknown.png?width=625&height=479)
+
+Now if we access [resource listing](#listing-resources), we should receive empty array:
+
+![Empty array Postman](https://media.discordapp.net/attachments/822059316806811651/954630039851368478/unknown.png?width=803&height=479)
+
+And if we try to access [with resource ID](#test-display-specific-resource), we got 404 not found: 
+
+![Not found Postman](https://media.discordapp.net/attachments/822059316806811651/954630390688145428/unknown.png?width=648&height=479)
+
+## Verdict
+
+Laravel bring us ease of API development with eloquent, API controller, migration, etc. There are many room of improvements here, right now we don't have any authentication method so that random user could access our API and do whatever they want. Let me know if you want i make the tutorial to secure your API!
 
 ## Reference
 

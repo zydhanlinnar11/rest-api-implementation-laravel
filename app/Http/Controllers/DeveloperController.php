@@ -14,7 +14,7 @@ class DeveloperController extends Controller
      */
     public function index()
     {
-        //
+        return Developer::all();
     }
 
     /**
@@ -25,7 +25,12 @@ class DeveloperController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $developer = new Developer();
+        $developer->name = $request->input('name');
+        $developer->fav_lang = $request->input('fav_lang');
+        
+        $developer->save();
+        return response()->json([ 'message' => 'Resource created' ]);
     }
 
     /**
@@ -36,7 +41,7 @@ class DeveloperController extends Controller
      */
     public function show(Developer $developer)
     {
-        //
+        return $developer;
     }
 
     /**
@@ -48,7 +53,11 @@ class DeveloperController extends Controller
      */
     public function update(Request $request, Developer $developer)
     {
-        //
+        $developer->name = $request->input('name');
+        $developer->fav_lang = $request->input('fav_lang');
+        
+        $developer->save();
+        return response()->json([ 'message' => 'Resource updated' ]);
     }
 
     /**
@@ -59,6 +68,8 @@ class DeveloperController extends Controller
      */
     public function destroy(Developer $developer)
     {
-        //
+        $developer->delete();
+
+        return response()->json([ 'message' => 'Resource deleted' ]);
     }
 }
