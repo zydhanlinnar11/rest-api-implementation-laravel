@@ -63,6 +63,68 @@ Then, you will have two new files `app/Models/Developer.php` for the model and `
 
 ![Created model and migration files](https://media.discordapp.net/attachments/822059316806811651/954305588400103444/unknown.png)
 
+### Migrate table
+
+```php
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('developers', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('developers');
+    }
+};
+```
+
+Short explanation:
+
+- `up()` method will be called when we run the migrations
+- `down()` method will be called when we rollback the migrations
+- `Schema::dropIfExists('developers')` will drop `developers` table from database if exists
+- `Schema::create('developers')` will create `developers` table
+- `$table->id()` will create incremental primary key with name `id`
+- `$table->timestamps()` will add `created_at` and `updated_at` columns to the table
+
+Supposed we want to add `name` and `fav_lang` columns with string type, we can modify the migration to be like this:
+
+```php
+Schema::create('developers', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->string('fav_lang');
+    $table->timestamps();
+});
+```
+
+Then, run the migration:
+
+```bash
+php artisan migrate
+```
+
 ## Reference
 
 - [API - Wikipedia](https://en.wikipedia.org/wiki/API)
