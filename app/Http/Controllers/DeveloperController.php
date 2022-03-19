@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDeveloperRequest;
 use App\Http\Resources\DeveloperResource;
 use App\Models\Developer;
 use Illuminate\Http\Request;
@@ -21,10 +22,10 @@ class DeveloperController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreDeveloperRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreDeveloperRequest $request)
     {
         $developer = new Developer();
         $developer->name = $request->input('name');

@@ -388,7 +388,91 @@ public function index()
 
 ![DeveloperResource testing](https://media.discordapp.net/attachments/822059316806811651/954635360653156412/unknown.png)
 
-Now, it only return `id` and `name`. If we look closer, it also add `data`, that will be useful if you use pagination. You can read more about API resources [here](https://laravel.com/docs/9.x/eloquent-resources)
+Now, it only return `id` and `name`. If we look closer, it also add `data`, that will be useful if you use pagination. You can read more about API resources [here](https://laravel.com/docs/9.x/eloquent-resources).
+
+### Input Validation
+
+What if we don't fill all the input when creating resource? Let's try it:
+
+![Test unfilled input](https://media.discordapp.net/attachments/822059316806811651/954636874142613544/unknown.png?width=662&height=479)
+
+Wow, we got Internal server error. We shouldn't return those error because the problem is from the user. Instead, we should validate data before doing any business logic. First, create request file:
+
+```bash
+php artisan make:request StoreDeveloperRequest
+```
+
+Now we have new file `app/Http/Requests/StoreDeveloperRequest.php`:
+
+```php
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreDeveloperRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return false;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            //
+        ];
+    }
+}
+```
+
+Short explanation:
+
+- `authorize()` method is for checking whether it is authorized to execute that request. For now, set it to `true` to authorize all request.
+- `rules()` method is for validating input.
+
+Now, we want to make `name` and `fav_lang` to be required. Let add it to the rules array:
+
+```php
+public function rules()
+{
+    return [
+        'name' => 'required',
+        'fav_lang' => 'required'
+    ];
+}
+```
+
+Then, in the controller, substitute `Request` with `StoreDeveloperRequest`:
+
+```php
+public function store(StoreDeveloperRequest $request)
+{
+    $developer = new Developer();
+    $developer->name = $request->input('name');
+    $developer->fav_lang = $request->input('fav_lang');
+    
+    $developer->save();
+    return response()->json([ 'message' => 'Resource created' ]);
+}
+```
+
+Test it again:
+
+![Test storing unprocessable content](https://media.discordapp.net/attachments/822059316806811651/954639595251839006/unknown.png?width=657&height=479)
+
+Now we got proper 422 - Unprocessable Content error and message that we must fill the `name` and `fav_lang` column. You can read more about another validation rules beside `required` [here](https://laravel.com/docs/9.x/validation#available-validation-rules).
 
 ## Reference
 
