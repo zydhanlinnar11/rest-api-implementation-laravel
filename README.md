@@ -38,17 +38,19 @@ Then open [http://127.0.0.1:8000](http://127.0.0.1:8000), you should see this sw
 
 I want to make this tutorial to be as simple as possible, so we're going to use SQLite3 for our database connection.
 
-First, create sqlite file:
+First, install sqlite and create sqlite file:
 
 ```bash
+# Change 8.1 according to your php version
+sudo apt install php8.1-sqlite3 sqlite3
+
 touch database.sqlite
 ```
 
-Open your `.env` file and edit this section to connect to your database file:
+Open your `.env` file and change `DB_CONNECTION` to `sqlite`, then delete `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`:
 
 ```text
 DB_CONNECTION=sqlite
-DB_HOST=/home/zydhanlinnar11/Github/rest-api-implementation-laravel/database.sqlite
 ```
 
 ### Creating Migrations and Model
