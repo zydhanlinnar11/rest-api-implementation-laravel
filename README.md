@@ -206,6 +206,30 @@ class DeveloperController extends Controller
 
 Look, our controller methods have `$developer` argument. Laravel will find record in database automatically for `Developer` table with [Route model binding](https://laravel.com/docs/9.x/routing#route-model-binding).
 
+## Setting Up Routes
+
+Now, open `routes/api.php` and add `DeveloperController` to the route:
+
+```php
+Route::apiResource('developers', DeveloperController::class);
+```
+
+Now check our route list:
+
+```bash
+php artisan route:list
+```
+
+![Route list for Developer resource](https://media.discordapp.net/attachments/822059316806811651/954614420791775262/unknown.png)
+
+Short explanations:
+
+- `GET` method for `api/developers` will be handled by `index()` method in `DeveloperController`. This route is for display a listing of the resource.
+- `GET` method for `api/developers/{developers}` will be handled by `show()` method in `DeveloperController`. This route is for display specific resource.
+- `POST` method for `api/developers` will be handled by `store()` method in `DeveloperController`. This route is for creating new resource.
+- `PUT`/`PATCH` method for `api/developers/{developers}` will be handled by `update()` method in `DeveloperController`. This route is for updating specific resource.
+- `DELETE` method for `api/developers/{developers}` will be handled by `destroy()` method in `DeveloperController`. This route is for deleting specific resource.
+
 ## Reference
 
 - [API - Wikipedia](https://en.wikipedia.org/wiki/API)
